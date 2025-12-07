@@ -1,40 +1,43 @@
-// js/share-links.js
-// Separate Share Popup (Option 1 — simple box, Harry's Pub theme)
+// js/social-links.js
+// Social links popup — full HTML + CSS + JS in one file
 
-const hpShareCSS = `
-.hp-share-overlay {
+/* ==============================
+   1) INJECT CSS
+============================== */
+const slStyles = `
+.sl-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.55);
+    background: rgba(0,0,0,0.65);
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 60000;
+    z-index: 50000;
 }
 
-.hp-share-overlay.hp-share-visible {
+.sl-overlay.sl-visible {
     display: flex;
 }
 
-.hp-share-card {
+.sl-card {
+    position: relative;
     width: min(420px, 92vw);
     background: #0b2317;
-    border-radius: 18px;
-    padding: 16px 16px 14px;
-    border: 1px solid rgba(242,198,84,0.55);
+    border-radius: 20px;
+    padding: 18px 14px 20px;
+    border: 1px solid rgba(242, 198, 84, 0.5);
     box-shadow: 0 18px 40px rgba(0,0,0,0.7);
     color: #f7f0cf;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    position: relative;
 }
 
-/* header */
-.hp-share-close {
+/* close + share */
+.sl-close,
+.sl-share {
     position: absolute;
-    top: 8px;
-    right: 10px;
-    width: 32px;
-    height: 32px;
+    top: 10px;
+    width: 34px;
+    height: 34px;
     border-radius: 10px;
     border: 1px solid rgba(242,198,84,0.7);
     background: transparent;
@@ -43,239 +46,338 @@ const hpShareCSS = `
     justify-content: center;
 }
 
-.hp-share-close img {
+.sl-close {
+    left: 10px;
+}
+
+.sl-share {
+    right: 10px;
+}
+
+.sl-close img,
+.sl-share img {
     width: 18px;
     height: 18px;
 }
 
-.hp-share-logo-wrap {
+/* logo */
+.sl-logo-wrap {
     display: flex;
     justify-content: center;
-    margin-top: 18px;
+    margin-top: 26px;
     margin-bottom: 10px;
 }
 
-.hp-share-logo {
-    width: 62px;
-    height: 62px;
+.sl-logo {
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid rgba(242,198,84,0.7);
 }
 
-.hp-share-title {
+/* slogan */
+.sl-slogan {
     text-align: center;
-    font-size: 0.9rem;
-    margin-bottom: 2px;
-    letter-spacing: 0.04em;
+    font-size: 0.78rem;
     color: #f7f0cf;
+    margin-bottom: 14px;
+    letter-spacing: 0.03em;
 }
 
-.hp-share-sub {
-    text-align: center;
-    font-size: 0.76rem;
-    margin-bottom: 12px;
-    color: #f1e8c4;
-}
-
-/* buttons row */
-.hp-share-actions {
+/* main row */
+.sl-main-row {
     display: flex;
+    align-items: center;
     gap: 8px;
+    padding: 8px 8px;
+    border-radius: 14px;
+    border: 1px solid rgba(242,198,84,0.55);
     margin-bottom: 10px;
 }
 
-.hp-share-btn {
-    flex: 1;
-    border-radius: 12px;
-    border: 1px solid rgba(242,198,84,0.65);
-    background: rgba(7,24,16,0.95);
-    color: #f7f0cf;
-    font-size: 0.78rem;
-    padding: 8px 6px;
+.sl-main-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid rgba(242,198,84,0.6);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-}
-
-.hp-share-btn span {
-    white-space: nowrap;
-}
-
-.hp-share-btn-copy {
-    background: rgba(242,198,84,0.18);
-    color: #f2c654;
-}
-
-/* link row */
-.hp-share-link-row {
     background: rgba(7,24,16,0.9);
+    flex-shrink: 0;
+}
+
+.sl-main-icon img {
+    width: 20px;
+    height: 20px;
+}
+
+.sl-main-text {
+    flex: 1;
+    font-size: 0.8rem;
+    line-height: 1.3;
+}
+
+.sl-open-btn {
+    flex-shrink: 0;
     border-radius: 10px;
-    border: 1px solid rgba(242,198,84,0.4);
+    border: 1px solid rgba(242,198,84,0.8);
+    background: rgba(242,198,84,0.12);
+    color: #f2c654;
+    font-size: 0.78rem;
     padding: 4px 8px;
 }
 
-#hpShareLinkInput {
-    width: 100%;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    color: #f7f0cf;
-    font-size: 0.76rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+/* bottom icons row */
+.sl-icons-row {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(242,198,84,0.35);
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.sl-icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid rgba(242,198,84,0.45);
+    background: rgba(7,24,16,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sl-icon-btn img {
+    width: 22px;
+    height: 22px;
+}
+
+.sl-icon-btn.sl-active {
+    background: rgba(242,198,84,0.18);
+    box-shadow: 0 0 0 1px rgba(242,198,84,0.65);
 }
 `;
 
-(function initSharePopup() {
-    // inject CSS
-    const styleId = "hp-share-style";
-    if (!document.getElementById(styleId)) {
-        const st = document.createElement("style");
-        st.id = styleId;
-        st.textContent = hpShareCSS;
-        document.head.appendChild(st);
-    }
+const slStyleTag = document.createElement("style");
+slStyleTag.textContent = slStyles;
+document.head.appendChild(slStyleTag);
 
-    // inject HTML
-    const overlay = document.createElement("div");
-    overlay.className = "hp-share-overlay";
-    overlay.id = "hpShareOverlay";
-    overlay.innerHTML = `
-      <div class="hp-share-card">
-          <button class="hp-share-close" type="button">
-              <img src="assets/svg/close.png" alt="Close">
-          </button>
+/* ==============================
+   2) INJECT HTML
+============================== */
+const slOverlay = document.createElement("div");
+slOverlay.className = "sl-overlay";
+slOverlay.innerHTML = `
+  <div class="sl-card">
+      <button class="sl-close">
+          <img src="assets/svg/close.png" alt="Close">
+      </button>
+      <button class="sl-share">
+          <img src="assets/svg/share.png" alt="Share">
+      </button>
 
-          <div class="hp-share-logo-wrap">
-              <img src="assets/img/logo.png" alt="Harrys Pub" class="hp-share-logo">
-          </div>
-
-          <div class="hp-share-title">Share Harry's Pub</div>
-          <div class="hp-share-sub">Choose how you want to share this page.</div>
-
-          <div class="hp-share-actions">
-              <button class="hp-share-btn hp-share-btn-copy" type="button">
-                  <span>Copy link</span>
-              </button>
-              <button class="hp-share-btn hp-share-btn-wa" type="button">
-                  <span>WhatsApp</span>
-              </button>
-              <button class="hp-share-btn hp-share-btn-mail" type="button">
-                  <span>Email</span>
-              </button>
-          </div>
-
-          <div class="hp-share-link-row">
-              <input id="hpShareLinkInput" type="text" readonly>
-          </div>
+      <div class="sl-logo-wrap">
+          <img src="assets/img/logo.png" alt="Harrys Pub" class="sl-logo">
       </div>
-    `;
-    document.body.appendChild(overlay);
 
-    const linkInput = overlay.querySelector("#hpShareLinkInput");
-    const btnCopy  = overlay.querySelector(".hp-share-btn-copy");
-    const btnWa    = overlay.querySelector(".hp-share-btn-wa");
-    const btnMail  = overlay.querySelector(".hp-share-btn-mail");
-    const btnClose = overlay.querySelector(".hp-share-close");
+      <div class="sl-slogan">
+          LETS DRINK EAT AND HAVE FUN TOGETHER
+      </div>
 
-    let lastShareData = {
-        title: document.title || "Harry's Pub",
-        text: "Check out Harry's Pub",
-        url: window.location.href
-    };
+      <div class="sl-main-row">
+          <div class="sl-main-icon">
+              <img id="slMainIcon" src="assets/svg/email.svg" alt="">
+          </div>
+          <div class="sl-main-text" id="slSmartText">
+              Stay in touch with us!
+          </div>
+          <button class="sl-open-btn">Open</button>
+      </div>
 
-    function buildShareData(trigger) {
-        const titleAttr = trigger?.getAttribute("data-share-title");
-        const textAttr  = trigger?.getAttribute("data-share-text");
-        const urlAttr   = trigger?.getAttribute("data-share-url");
+      <div class="sl-icons-row">
+          <button class="sl-icon-btn" data-sl-type="email">
+              <img src="assets/svg/email.svg" alt="">
+          </button>
+          <button class="sl-icon-btn" data-sl-type="facebook">
+              <img src="assets/svg/facebook.svg" alt="">
+          </button>
+          <button class="sl-icon-btn" data-sl-type="call">
+              <img src="assets/svg/call.svg" alt="">
+          </button>
+          <button class="sl-icon-btn" data-sl-type="instagram">
+              <img src="assets/svg/instagram.svg" alt="">
+          </button>
+          <button class="sl-icon-btn" data-sl-type="map">
+              <img src="assets/svg/map.svg" alt="">
+          </button>
+      </div>
+  </div>
+`;
+document.body.appendChild(slOverlay);
 
-        const title = titleAttr || document.title || "Harry's Pub";
-        const text  = textAttr  || "Check out Harry's Pub";
-        let url     = urlAttr   || window.location.href;
-        try {
-            url = new URL(url, window.location.href).href;
-        } catch {
-            url = window.location.href;
-        }
+/* ==============================
+   3) LOGIC
+============================== */
 
-        return { title, text, url };
+const slMainIcon = slOverlay.querySelector("#slMainIcon");
+const slSmartText = slOverlay.querySelector("#slSmartText");
+const slOpenBtn   = slOverlay.querySelector(".sl-open-btn");
+const slIconButtons = Array.from(slOverlay.querySelectorAll(".sl-icon-btn"));
+
+let slCurrentType = null;
+
+const SL_CONFIG = {
+    email: {
+        icon: "assets/svg/email.svg",
+        text: "Send us an email — we reply quickly!",
+        url: "harshansibia1081@gmail.com",
+        button: "Write Email"
+    },
+    facebook: {
+        icon: "assets/svg/facebook.svg",
+        text: "Follow us on Facebook for events & offers.",
+        url: "https://m.facebook.com/share/16VoNDSezG/?wtsid=rdr_0vgwX8yGSVQVE829a",
+        button: "Open Page"
+    },
+    call: {
+        icon: "assets/svg/call.svg",
+        text: "Call us — your table is waiting!",
+        url: "tel:+390836505587",
+        button: "Call Now"
+    },
+    instagram: {
+        icon: "assets/svg/instagram.svg",
+        text: "Check our Instagram for today’s vibes.",
+        url: "https://www.instagram.com/harryspubmaglie/?igsh=MWlmc2Z4ZzlhMTQ1cQ%3D%3D&utm_source=qr",
+        button: "View Profile"
+    },
+    map: {
+        icon: "assets/svg/map.svg",
+        text: "Come fast, we are waiting for you!",
+        urlGoogle: "https://maps.app.goo.gl/92MSqHSoN8XhbkoU6?g_st=ipc",
+        urlApple: "
+https://maps.apple/p/XRgIwwCk5R15Sa
+",
+        button: "Let's Go"
+    },
+    contact: {
+        icon: "assets/svg/call.svg",
+        text: "Have a question? Contact us now.",
+        url: "tel:+390000000000",
+        button: "Contact Now"
     }
+};
 
-    async function openNativeOrFallback(trigger) {
-        const data = buildShareData(trigger);
-        lastShareData = data;
+function slIsAppleDevice() {
+    const ua = navigator.userAgent || "";
+    return /iPhone|iPad|iPod|Macintosh/i.test(ua);
+}
 
-        // native share try
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: data.title,
-                    text: data.text,
-                    url: data.url
-                });
-                return;
-            } catch (err) {
-                // ignore and fallback
-            }
-        }
+function slSetType(type) {
+    const cfg = SL_CONFIG[type];
+    if (!cfg) return;
+    slCurrentType = type;
 
-        // fallback popup
-        linkInput.value = data.url;
-        overlay.classList.add("hp-share-visible");
-    }
+    slMainIcon.src = cfg.icon;
+    slSmartText.textContent = cfg.text;
+    slOpenBtn.textContent = cfg.button || "Open";
 
-    function closeOverlay() {
-        overlay.classList.remove("hp-share-visible");
-    }
-
-    // document-level click: trigger = .sl-share OR [data-share]
-    document.addEventListener("click", (e) => {
-        const trigger = e.target.closest(".sl-share, [data-share]");
-        if (!trigger) return;
-
-        e.preventDefault();
-        openNativeOrFallback(trigger);
+    slIconButtons.forEach(btn => {
+        btn.classList.toggle("sl-active", btn.dataset.slType === type);
     });
+}
 
-    // inside popup
-    overlay.addEventListener("click", (e) => {
-        const target = e.target;
+function slOpenOverlay(type) {
+    slSetType(type);
+    slOverlay.classList.add("sl-visible");
+}
 
-        if (target === overlay) {
-            closeOverlay();
-            return;
+function slOpenLink() {
+    if (!slCurrentType) return;
+    const cfg = SL_CONFIG[slCurrentType];
+    if (!cfg) return;
+
+    if (slCurrentType === "map") {
+        const url = slIsAppleDevice() ? cfg.urlApple : cfg.urlGoogle;
+        if (url) window.open(url, "_blank");
+        return;
+    }
+
+    if (cfg.url) {
+        window.open(cfg.url, "_blank");
+    }
+}
+
+function slCloseOverlay(openLinkFirst) {
+    if (openLinkFirst) slOpenLink();
+    slOverlay.classList.remove("sl-visible");
+}
+
+/* ==============================
+   4) EVENT HANDLERS
+============================== */
+
+// Footer icons + contact buttons
+document.addEventListener("click", (e) => {
+    const target = e.target;
+
+    // FOOTER ICONS
+    const footerBtn = target.closest(".f-item");
+    if (footerBtn) {
+        const img = footerBtn.querySelector("img");
+        if (img && img.src) {
+            if (img.src.includes("email.svg")) slOpenOverlay("email");
+            else if (img.src.includes("facebook.svg")) slOpenOverlay("facebook");
+            else if (img.src.includes("call.svg")) slOpenOverlay("call");
+            else if (img.src.includes("instagram.svg")) slOpenOverlay("instagram");
+            else if (img.src.includes("map.svg")) slOpenOverlay("map");
         }
+        return;
+    }
 
-        if (target.closest(".hp-share-close")) {
-            closeOverlay();
-            return;
-        }
+    // CONTACT BUTTON (Navbar / floating) — text se detect
+    const btn = target.closest("button");
+    if (btn && btn.textContent.trim().toLowerCase() === "contact") {
+        slOpenOverlay("contact");
+        return;
+    }
+});
 
-        if (target.closest(".hp-share-btn-copy")) {
-            const url = lastShareData.url;
-            if (navigator.clipboard?.writeText) {
-                navigator.clipboard.writeText(url).catch(() => {});
-            } else {
-                linkInput.select();
-                try { document.execCommand("copy"); } catch {}
-            }
-            return;
-        }
+// Popup ke andar clicks
+slOverlay.addEventListener("click", (e) => {
+    const target = e.target;
 
-        if (target.closest(".hp-share-btn-wa")) {
-            const waText = `${lastShareData.title}\n${lastShareData.url}`;
-            const waUrl = "https://wa.me/?text=" + encodeURIComponent(waText);
-            window.open(waUrl, "_blank");
-            return;
-        }
+    // card ke bahar click = link open + close
+    if (target === slOverlay) {
+        slCloseOverlay(false);
+        return;
+    }
 
-        if (target.closest(".hp-share-btn-mail")) {
-            const subject = encodeURIComponent(lastShareData.title);
-            const body = encodeURIComponent((lastShareData.text || "") + "\n\n" + lastShareData.url);
-            const mailUrl = `mailto:?subject=${subject}&body=${body}`;
-            window.location.href = mailUrl;
-            return;
-        }
-    });
-})();
+    // close button
+    if (target.closest(".sl-close")) {
+        slCloseOverlay(false);
+        return;
+    }
+
+    // main Open button
+    if (target.closest(".sl-open-btn")) {
+        slCloseOverlay(true);
+        return;
+    }
+
+    // bottom icons
+    const iconBtn = target.closest(".sl-icon-btn");
+    if (iconBtn) {
+        const type = iconBtn.dataset.slType;
+        slSetType(type);
+    }
+
+    // NOTE: .sl-share ka click ab yahan handle nahi ho raha,
+    // usko naya share-links.js handle karega.
+});
+
+// default type
+slSetType("email");
