@@ -245,7 +245,7 @@ const SL_CONFIG = {
     call: {
         icon: "assets/svg/call.svg",
         text: "Call us — your table is waiting!",
-        url: "tel:+390836505587",
+        url: "tel:+390836505787",
         button: "Call Now"
     },
     instagram: {
