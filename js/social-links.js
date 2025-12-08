@@ -257,8 +257,8 @@ const SL_CONFIG = {
     map: {
         icon: "assets/svg/map.svg",
         text: "Come fast, we are waiting for you!",
-        urlGoogle: "https://maps.apple/p/XRgIwwCk5R15Sa",
-        urlApple: "https://maps.app.goo.gl/92MSqHSoN8XhbkoU6?g_st=ipc",
+        urlGoogle: "vvhttps://maps.app.goo.gl/92MSqHSoN8XhbkoU6?g_st=ipcv",
+        urlApple: "https://maps.apple/p/XRgIwwCk5R15Sa",
         button: "Let's Go"
     },
     contact: {
