@@ -239,26 +239,26 @@ const SL_CONFIG = {
     facebook: {
         icon: "assets/svg/facebook.svg",
         text: "Follow us on Facebook for events & offers.",
-        url: "https://m.facebook.com/share/16VoNDSezG/?wtsid=rdr_0vgwX8yGSVQVE829a",
+        url: "https://facebook.com/",
         button: "Open Page"
     },
     call: {
         icon: "assets/svg/call.svg",
         text: "Call us — your table is waiting!",
-        url: "tel:+390836505587",
+        url: "tel:+390000000000",
         button: "Call Now"
     },
     instagram: {
         icon: "assets/svg/instagram.svg",
         text: "Check our Instagram for today’s vibes.",
-        url: "https://www.instagram.com/harryspubmaglie/?igsh=MWlmc2Z4ZzlhMTQ1cQ%3D%3D&utm_source=qr",
+        url: "https://instagram.com/",
         button: "View Profile"
     },
     map: {
         icon: "assets/svg/map.svg",
         text: "Come fast, we are waiting for you!",
-        urlGoogle: "https://maps.app.goo.gl/92MSqHSoN8XhbkoU6?g_st=ipc",
-        urlApple: "https://maps.apple/p/XRgIwwCk5R15Sa",
+        urlGoogle: "https://maps.google.com",
+        urlApple: "http://maps.apple.com/?q=Harrys%20Pub",
         button: "Let's Go"
     },
     contact: {
